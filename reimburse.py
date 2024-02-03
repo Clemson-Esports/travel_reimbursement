@@ -12,7 +12,7 @@ DEFAULT_CONFIG = {
     "max_occupants": {"sedan": 2, "suv": 3},
 }
 
-DEFAULT_TRIPS = "Sedan 2 28 Joe\nSUV 3 33 Mama"
+DEFAULT_TRIPS = "Sedan 2 28 Jack\nSUV 3 33 Jill"
 
 
 @dataclass

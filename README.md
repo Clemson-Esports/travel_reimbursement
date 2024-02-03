@@ -52,8 +52,8 @@ which says that the trip is 300 miles, the current price of gas is $2.75 per gal
 In the top right window, there are trips to enter. This defaults to:
 
 ```
-Sedan 2 30
-SUV 3 25
+Sedan 2 30 Jack
+SUV 3 25 Jill
 ```
 
-which says that two trips happened: one in a Sedan with 2 people that costed $30, and one in an SUV with 3 people that costed $35. You can enter any number of trips here, and the vehicle type is not case-sensitive, it just must be defined in the settings. Press "Enter" on the Trips button to calculate the reimbursable costs, which will display in the bottom window.
+which says that two trips happened: one in a Sedan with 2 people that costed $30 paid by Jack, and one in an SUV with 3 people that costed $35 paid by Jill. You can enter any number of trips here, and the vehicle type is not case-sensitive, it just must be defined in the settings. Press "Enter" on the Trips button to calculate the reimbursable costs, which will display in the bottom window.
