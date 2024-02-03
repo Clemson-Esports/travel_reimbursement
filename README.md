@@ -15,10 +15,10 @@ To recreate this executable, run (assuming you have Python on your machine):
 
 ```bash
 pip install pyinstaller
-pyinstaller reimburse.py
+pyinstaller --onefile reimburse.py
 ```
 
-which will create an executable at [dist/reimburse/reimburse.exe](https://github.com/Clemson-Esports/travel_reimbursement/blob/main/dist/reimburse/reimburse.exe). Or, alternatively, click [here](https://github.com/Clemson-Esports/travel_reimbursement/archive/refs/heads/main.zip) to download the entire repository, and open the executable `travel_reimbursement-main/dist/reimburse/reimburse.exe` if you trust it.
+which will create an executable at [dist/reimburse.exe](https://github.com/Clemson-Esports/travel_reimbursement/blob/main/dist/reimburse.exe). Or, alternatively, click [here](https://github.com/Clemson-Esports/travel_reimbursement/archive/refs/heads/main.zip) to download the entire repository, and open the executable `travel_reimbursement-main/dist/reimburse.exe` if you trust it.
 
 This will open an example window which you can use to see reimbursable amounts for a trip.
 
