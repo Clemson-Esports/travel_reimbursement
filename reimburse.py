@@ -38,6 +38,8 @@ class Trip:
        
        max_gallons_consumed = self.config["total_miles"] / expected_mpg
        self.reimbursed = max_gallons_consumed * actual_gas_rate * min(1.0, self.num_occupants / max_occupants)
+       
+       self.reimbursed = min(self.reimbursed, self.expected)
 
     def __str__(self):
     
