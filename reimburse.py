@@ -2,56 +2,46 @@ from dataclasses import dataclass
 import json
 import tkinter as tk
 
+
 DEFAULT_CONFIG = {
-    "total_miles": 300,
-    "gas_per_gal": 2.75,
+    "total_miles": 433,
+    "gas_per_gal": 2.70,
+    "tax_per_gal": 0.26,
     "vehicle_classes": ["sedan", "suv"],
     "expected_mpg": {"sedan": 35, "suv": 30},
     "max_occupants": {"sedan": 2, "suv": 3},
 }
 
-DEFAULT_TRIPS = "Sedan 2 30\nSUV 3 35"
+DEFAULT_TRIPS = "Sedan 2 28 Joe\nSUV 3 33 Mama"
 
 
 @dataclass
 class Trip:
 
-    vehicle_class: str
-    num_occupants: int
-    actual_cost: float
     config: dict
-    expected_cost: float = None
+    vehicle_class: str
+    reported_mpg: int
+    num_occupants: int
+    user: str
     reimbursed: float = None
+    expected: float = None
 
     def __post_init__(self):
-
-        occupancy_multiplier: float = (
-            self.num_occupants / self.config["max_occupants"][self.vehicle_class]
-        )
-        occupancy_multiplier = min(1.0, occupancy_multiplier)
-
-        actual_mpg: float = (
-            self.config["total_miles"] / self.actual_cost * self.config["gas_per_gal"]
-        )
-        mpg_multiplier: float = (
-            actual_mpg / self.config["expected_mpg"][self.vehicle_class]
-        )
-        mpg_multiplier = min(1.0, mpg_multiplier)
-
-        expected_gallons_consumed: float = (
-            self.config["total_miles"] / self.config["expected_mpg"][self.vehicle_class]
-        )
-        self.expected_cost: float = (
-            self.config["gas_per_gal"] * expected_gallons_consumed
-        )
-        self.reimbursed: float = (
-            occupancy_multiplier * mpg_multiplier * self.expected_cost
-        )
-        self.reimbursed = min(self.reimbursed, self.actual_cost)
+    
+       actual_gas_rate = self.config["gas_per_gal"] + self.config["tax_per_gal"]
+    
+       expected_mpg = self.config["expected_mpg"][self.vehicle_class]
+       max_occupants = self.config["max_occupants"][self.vehicle_class]
+       
+       expected_gallons_consumed = self.config["total_miles"] / self.reported_mpg
+       self.expected = expected_gallons_consumed * actual_gas_rate
+       
+       max_gallons_consumed = self.config["total_miles"] / expected_mpg
+       self.reimbursed = max_gallons_consumed * actual_gas_rate * min(1.0, self.num_occupants / max_occupants)
 
     def __str__(self):
-
-        return f"Type: {self.vehicle_class}, # occupants: {self.num_occupants}, cost: ${self.actual_cost:.2f}, expected cost: ${self.expected_cost:.2f}, reimburseable cost: ${self.reimbursed:.2f}"
+    
+        return f'Class: {self.vehicle_class}, MPG: {self.reported_mpg}, Expected: ${self.expected:.2f}, Reimbursement: ${self.reimbursed:.2f}, User: {self.user}'
 
 
 class App:
@@ -108,22 +98,30 @@ class App:
 
     def parse_trip(self, line: str) -> Trip:
 
-        vehicle_class, num_occupants, actual_cost = line.split()
+        vehicle_class, num_occupants, reported_mpg, user = line.split()
         return Trip(
+            config=self.config,
             vehicle_class=vehicle_class.lower(),
             num_occupants=int(num_occupants),
-            actual_cost=float(actual_cost),
-            config=self.config,
+            reported_mpg=int(reported_mpg),
+            user=user
         )
 
     def trip_press(self):
 
         self.trip_lines = self.trip_txt.get(1.0, "end-1c").split("\n")
         self.reimbursement_txt.delete("1.0", tk.END)
+        txt = ""
         for line in self.trip_lines:
-            trip = self.parse_trip(line)
-            self.reimbursement_txt.insert("1.0", f"{trip}\n")
+            try:
+                trip = self.parse_trip(line)
+            except ValueError:
+                trip = ''
+            txt += f"{trip}\n"
+        self.reimbursement_txt.insert("1.0", txt)
         self.trip_lbl.config(text="Info collected!")
 
 
-app = App()
+if __name__ == '__main__':
+
+    app = App()
