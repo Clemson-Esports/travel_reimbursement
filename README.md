@@ -28,8 +28,9 @@ In the top left window, there will be a configuration text box that defines the 
 
 ```json
 {
-    "total_miles": 300,
-    "gas_per_gal": 2.75,
+    "total_miles": 433,
+    "gas_per_gal": 2.70,
+    "tax_per_gal": 0.26,
     "vehicle_classes": [
         "sedan",
         "suv"
